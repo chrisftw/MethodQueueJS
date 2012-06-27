@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Method Queue Sample</title>
+  </head>
+  <body>
+    <h1>MethodQueue</h1>
+    <p>This is just a simple example test page example how MethodQueue JS utility works.</p>
+    <div id="virtual-console"></div>
+    <script src="js/method-queue.js"></script>
+    <script>
+      // first set your custom function...
+      var globalTarget = document.getElementById("virtual-console");
+      
+      var consoleAppend = function(message) {
+        globalTarget.innerHTML = globalTarget.innerHTML + message + "<br/>\n";
+      };
+      
+      MethodQueue.functionToRun = function(obj) { 
+        var total = MethodQueue.curConcurrent;
+        setTimeout(
+          function() { // this is an Async call that takes time
+            consoleAppend("queue length when called (counting self): " + total + " object: " + obj);
+            MethodQueue.end();  // Must call this method as a call back in your async method when it is done.
+          }, 1000)  // sample async calls are taking 1 second to complete
+        };
+
+      // Set your variables objects here (one object per method call)
+      consoleAppend("Enqueing: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110]");
+      MethodQueue.queue = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110];
+
+      // Start the Queue
+      MethodQueue.start()
+
+      // five seconds later we add a new item on the queue...
+      setTimeout(function(){
+        consoleAppend("Enqueing: Hello World");
+        MethodQueue.enqueue("Hello World" )
+      }, 5000);
+    </script>
+  </body>
+</html>
