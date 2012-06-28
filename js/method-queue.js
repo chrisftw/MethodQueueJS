@@ -31,5 +31,11 @@
     }
   },
   functionToRun: function (obj) { alert("Be sure to set MethodQueue.functionToRun to your custom method before starting MethodQueue."); },
-  end: function () { MethodQueue.curConcurrent--; }
+  end: function () {
+    MethodQueue.curConcurrent--;
+    if(MethodQueue.curConcurrent == 0 && MethodQueue.queue.length == 0) {
+      MethodQueue.emptyQueueCallback();
+    }
+  },
+  emptyQueueCallback: function (obj) { }
 };
